@@ -25,7 +25,7 @@ include './moduleFunctions.php';
 
 $URL = $gibbon->session->get('absoluteURL') . '/index.php?q=/modules/' . $gibbon->session->get('module') . '/name.php';
 
-if (isActionAccessible($guid, $connection2, '/modules/Module Name/name_add.php') == false) {
+if (!isActionAccessible($guid, $connection2, '/modules/Module Name/name_delete.php')) {
     //Fail 0
     $URL = $URL.'&return=error0';
     header("Location: {$URL}");

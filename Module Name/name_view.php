@@ -23,7 +23,7 @@ use Gibbon\Domain\DataSet;
 //Module includes
 require_once __DIR__ . '/moduleFunctions.php';
 
-if (!isActionAccessible($guid, $connection2, "/modules/Module Name/name.php")) {
+if (!isActionAccessible($guid, $connection2, '/modules/Module Name/name_view.php'))) {
 	//Acess denied
 	$page->addError(__('You do not have access to this action.'));
 }

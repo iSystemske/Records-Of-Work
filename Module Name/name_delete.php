@@ -22,7 +22,7 @@ use Gibbon\Forms\Prefab\DeleteForm;
 //Module includes
 require_once __DIR__ . '/moduleFunctions.php';
 
-if (!isActionAccessible($guid, $connection2, "/modules/Module Name/name_add.php")) {
+if (!isActionAccessible($guid, $connection2, "/modules/Module Name/name_delete.php")) {
 	//Acess denied
 	$page->addError(__('You do not have access to this action.'));
 }
