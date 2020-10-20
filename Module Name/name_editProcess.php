@@ -18,29 +18,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 include '../../gibbon.php';
-
 include './moduleFunctions.php';
-
-
 
 $URL = $gibbon->session->get('absoluteURL') . '/index.php?q=/modules/' . $gibbon->session->get('module') . '/name.php';
 
 if (!isActionAccessible($guid, $connection2, '/modules/Module Name/name_edit.php')) {
-    //Fail 0
+    // Access denied
     $URL = $URL.'&return=error0';
     header("Location: {$URL}");
 } else {
-    //Proceed!
-    $thing = $_POST['thing']; //The varaiables you will be processing
+    // Proceed!
+    $thing = $_POST['thing']; // The variables you will be processing
 
-    if ($name == '') { //Check that your required variables are present
-        //Fail 3
+    // Check that your required variables are present
+    if ($name == '') { 
         $URL = $URL.'&return=error3';
         header("Location: {$URL}");
-    } else {
-        //Your SQL or Gateway alter query
-
-        $URL .= "&return=success0&editID=$AI";
-        header("Location: {$URL}");
+        exit;
     }
+
+    // Your SQL or Gateway alter query
+    $URL .= "&return=success0&editID=$AI";
+    header("Location: {$URL}");
 }
