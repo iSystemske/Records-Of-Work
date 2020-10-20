@@ -19,16 +19,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 use Gibbon\Forms\Prefab\DeleteForm;
 
-//Module includes
+// Module includes
 require_once __DIR__ . '/moduleFunctions.php';
 
 if (!isActionAccessible($guid, $connection2, "/modules/Module Name/name_delete.php")) {
-	//Acess denied
+	// Access denied
 	$page->addError(__('You do not have access to this action.'));
 }
 else {
-    $ID = $_POST['ID']; //The ID / primary key param posted from the name_view page.
+    $ID = $_POST['ID']; // The ID / primary key param posted from the name_view page.
     $form = DeleteForm::createForm($gibbon->session->get('absoluteURL') . '/index.php?q=/modules/' . $gibbon->session->get('module') . '/name.php?ID=$ID');
     echo $form->getOutput();
 }	
-?>

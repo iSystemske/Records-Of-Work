@@ -20,17 +20,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 use Gibbon\Tables\DataTable;
 use Gibbon\Domain\DataSet;
 
-//Module includes
+// Module includes
 require_once __DIR__ . '/moduleFunctions.php';
 
-if (!isActionAccessible($guid, $connection2, '/modules/Module Name/name_view.php'))) {
-	//Acess denied
+if (!isActionAccessible($guid, $connection2, '/modules/Module Name/name_view.php')) {
+	// Access denied
 	$page->addError(__('You do not have access to this action.'));
-}
-else {
-    
-    //SQL or Gateway query, as a dataset
-    //For a OO datatable, see https://gist.github.com/SKuipers/e176454a2feb555126c2147865bd0626
-    //Don't forget to put header and column actions if you're using add/edit/delete pages AND include the ID/primary key as a param
+} else {
+    // SQL or Gateway query, as a dataset
+    // For a OO datatable, see https:// gist.github.com/SKuipers/e176454a2feb555126c2147865bd0626
+    // Don't forget to put header and column actions if you're using add/edit/delete pages AND include the ID/primary key as a param
 }	
-?>

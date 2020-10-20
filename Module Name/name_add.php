@@ -17,17 +17,13 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
-//Module includes
+// Module includes
 require_once __DIR__ . '/moduleFunctions.php';
 
 if (!isActionAccessible($guid, $connection2, "/modules/Module Name/name_add.php")) {
-	//Acess denied
+	// Access denied
 	$page->addError(__('You do not have access to this action.'));
-}
-else {
-   //For a form
-   //Check out https://gist.github.com/SKuipers/3a4de3a323ab9d0969951894c29940ae for a cheatsheet / guide
+} else {
+   // For a form
+   // Check out https:// gist.github.com/SKuipers/3a4de3a323ab9d0969951894c29940ae for a cheatsheet / guide
 }	
-?>

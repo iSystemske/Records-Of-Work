@@ -24,21 +24,21 @@ include './moduleFunctions.php';
 $URL = $gibbon->session->get('absoluteURL') . '/index.php?q=/modules/' . $gibbon->session->get('module') . '/name.php';
 
 if (!isActionAccessible($guid, $connection2, '/modules/Module Name/name_delete.php')) {
-    //Fail 0
+    // Access denied
     $URL = $URL.'&return=error0';
     header("Location: {$URL}");
 } else {
-    //Proceed!
-    $ID = $_POST['ID']; //The ID of the item you will be deleting
+    // Proceed!
+    $ID = $_POST['ID']; // The ID of the item you will be deleting
 
-    if ($thing == '') { //Check that your required variables are present
-        //Fail 3
+    // Check that your required variables are present
+    if (empty($thing)) { 
         $URL = $URL.'&return=error3';
         header("Location: {$URL}");
-    } else {
-        //Your SQL or Gateway delete query
-
-        $URL .= "&return=success";
-        header("Location: {$URL}");
+        exit;
     }
+
+    // Your SQL or Gateway delete query
+    $URL .= "&return=success";
+    header("Location: {$URL}");
 }
