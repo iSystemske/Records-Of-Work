@@ -1,2 +1,2 @@
 # Gibbon Starter Module
- A starter module for gibbon
+ A simple template module to get you started making a module for Gibbon
