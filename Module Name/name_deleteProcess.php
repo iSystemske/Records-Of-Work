@@ -21,8 +21,6 @@ include '../../gibbon.php';
 
 include './moduleFunctions.php';
 
-
-
 $URL = $gibbon->session->get('absoluteURL') . '/index.php?q=/modules/' . $gibbon->session->get('module') . '/name.php';
 
 if (!isActionAccessible($guid, $connection2, '/modules/Module Name/name_delete.php')) {
@@ -38,7 +36,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Module Name/name_delete.p
         $URL = $URL.'&return=error3';
         header("Location: {$URL}");
     } else {
-        //Your SQL or Gateway deletee query
+        //Your SQL or Gateway delete query
 
         $URL .= "&return=success";
         header("Location: {$URL}");

@@ -20,38 +20,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //This file describes the module, including database tables
 
 //Basic variables
-$name="" ; //The name of the variable as it appears to users. Needs to be unique to installation. Also the name of the folder that holds the unit.
-$description="" ; //Short text description
+$name='' ; //The name of the variable as it appears to users. Needs to be unique to installation. Also the name of the folder that holds the unit.
+$description='' ; //Short text description
 $entryURL="index.php" ; //The landing page for the unit, used in the main menu
 $type="Additional" ; //Do not change.
-$category="" ; //The main menu area to place the module in
-$version="" ; //Verson number
-$author="" ; //Your name
-$url="" ; //Your URL
+$category='' ; //The main menu area to place the module in
+$version='' ; //Verson number
+$author='' ; //Your name
+$url='' ; //Your URL
 
 //Module tables & gibbonSettings entries
-$moduleTables[0]="" ; //One array entry for every database table you need to create. Might be nice to preface the table name with the module name, to keep the db neat. 
-$moduleTables[1]="" ; //Also can be used to put data into gibbonSettings. Other sql can be run, but resulting data will not be cleaned up on uninstall.
-
+$moduleTables[]='' ; //One array entry for every database table you need to create. Might be nice to preface the table name with the module name, to keep the db neat. 
+$moduleTables[]='' ; //Also can be used to put data into gibbonSettings. Other sql can be run, but resulting data will not be cleaned up on uninstall.
 
 //Action rows 
 //One array per action
-$actionRows[0]["name"]="" ; //The name of the action (appears to user in the right hand side module menu)
-$actionRows[0]["precedence"]="0"; //If it is a grouped action, the precedence controls which is highest action in group
-$actionRows[0]["category"]="" ; //Optional: subgroups for the right hand side module menu
-$actionRows[0]["description"]="" ; //Text description
-$actionRows[0]["URLList"]="" ; //List of pages included in this action
-$actionRows[0]["entryURL"]="" ; //The landing action for the page.
-$actionRows[0]["defaultPermissionAdmin"]="Y" ; //Default permission for built in role Admin
-$actionRows[0]["defaultPermissionTeacher"]="Y" ; //Default permission for built in role Teacher
-$actionRows[0]["defaultPermissionStudent"]="N" ; //Default permission for built in role Student
-$actionRows[0]["defaultPermissionParent"]="N" ; //Default permission for built in role Parent
-$actionRows[0]["defaultPermissionSupport"]="N" ; //Default permission for built in role Support
-$actionRows[0]["categoryPermissionStaff"]="Y" ; //Should this action be available to user roles in the Staff category?
-$actionRows[0]["categoryPermissionStudent"]="N" ; //Should this action be available to user roles in the Student category?
-$actionRows[0]["categoryPermissionParent"]="N" ; //Should this action be available to user roles in the Parent category?
-$actionRows[0]["categoryPermissionOther"]="N" ; //Should this action be available to user roles in the Other category?
-
+$actionRows[] = [
+    'name'                      => '',//The name of the action (appears to user in the right hand side module menu)
+    'precedence'                => '0',//If it is a grouped action, the precedence controls which is highest action in group
+    'category'                  => '', //Optional: subgroups for the right hand side module menu
+    'description'               => '', //Text description
+    'URLList'                   => '', //List of pages included in this action
+    'entryURL'                  => '', //The landing action for the page.
+    'entrySidebar'              => 'Y', //Whether or not there's a sidebar on entry to the action
+    'menuShow'                  => 'Y', //Whether or not this action shows up in menus or if it's hidden
+    'defaultPermissionAdmin'    => 'Y', //Default permission for built in role Admin
+    'defaultPermissionTeacher'  => 'Y', //Default permission for built in role Teacher
+    'defaultPermissionStudent'  => 'N', //Default permission for built in role Student
+    'defaultPermissionParent'   => 'N', //Default permission for built in role Parent
+    'defaultPermissionSupport'  => 'Y', //Default permission for built in role Support
+    'categoryPermissionStaff'   => 'Y', //Should this action be available to user roles in the Staff category?
+    'categoryPermissionStudent' => 'Y', //Should this action be available to user roles in the Student category?
+    'categoryPermissionParent'  => 'Y', //Should this action be available to user roles in the Parent category?
+    'categoryPermissionOther'   => 'Y', //Should this action be available to user roles in the Other category?
+];
 //Hooks
-$hooks[0]="" ; //Serialised array to create hook and set options. See Hooks documentation online.
+$hooks[]='' ; //Serialised array to create hook and set options. See Hooks documentation online.
 ?>
