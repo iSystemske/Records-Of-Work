@@ -17,13 +17,22 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Module includes
+use Gibbon\Domain\System\SettingGateway;
+
 require_once __DIR__ . '/moduleFunctions.php';
 
-if (!isActionAccessible($guid, $connection2, "/modules/Module Name/name_add.php")) {
-	// Access denied
-	$page->addError(__('You do not have access to this action.'));
+$page->breadcrumbs->add(__('Manage Records Of Work Settings'));
+
+if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/recordsOfWork_settings.php')) {
+    //Acess denied
+    $page->addError(__('You do not have access to this action.'));
 } else {
-   // For a form
-   // Check out https:// gist.github.com/SKuipers/3a4de3a323ab9d0969951894c29940ae for a cheatsheet / guide
-}	
+    //Proceed!
+    $settingManager = getSettings($container);
+
+    $form = $settingManager->form($session->get('absoluteURL') . '/modules/' . $session->get('module') . '/recordsOfWork_settingsProcess.php');
+    $form->addHiddenValue('address', $session->get('address'));
+
+    echo $form->getOutput();
+}
+?>
