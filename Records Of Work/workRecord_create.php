@@ -23,7 +23,9 @@ use Gibbon\Forms\Form;
 use Gibbon\Module\RecordsOfWork\Domain\TechGroupGateway;
 use Gibbon\Module\RecordsOfWork\Domain\SubcategoryGateway;
 use Gibbon\Domain\School\FacilityGateway;
-
+use Gibbon\Contracts\Database\Connection;
+use Gibbon\Domain\User\RoleGateway;
+use Gibbon\Domain\Messenger\MessengerGateway;
 require_once __DIR__ . '/moduleFunctions.php';
 
 $page->breadcrumbs->add(__('Create Record Of Work'));
@@ -48,14 +50,40 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
     $form = Form::create('createIssue', $session->get('absoluteURL') . '/modules/' . $moduleName . '/workRecord_createProccess.php', 'post');
     $form->setFactory(DatabaseFormFactory::create($pdo));     
     $form->addHiddenValue('address', $session->get('address'));
-    
+//test
+      //      $data = array('gibbonSchoolYearID' => $session->get('gibbonSchoolYearID'));
+        //    $sql = "SELECT gibbonYearGroup.name as groupBy, gibbonCourseClassID as value, CONCAT(gibbonCourse.nameShort, '.', gibbonCourseClass.nameShort) AS name FROM gibbonCourseClass JOIN gibbonCourse ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID) JOIN gibbonYearGroup ON (gibbonCourse.gibbonYearGroupIDList LIKE concat( '%', gibbonYearGroup.gibbonYearGroupID, '%' )) WHERE gibbonSchoolYearID=:gibbonSchoolYearID AND gibbonCourseClass.reportable='Y' ORDER BY gibbonYearGroup.sequenceNumber, name";
+//test again
+        // Class
+//end test    */
     $row = $form->addRow();
-        $row->addLabel('issueName', __('Record Of Work Subject'));
+        $row->addLabel('issueName', __('Record Of Work for :'))
+            ->description(__('use the format shown. (type "Week 1 or Week 2 ..")'));
         $row->addTextField('issueName')
+            ->placeholder('Week 0')
             ->required()
             ->maxLength(55);
     
-    if ($simpleCategories) {
+//classes
+$row = $form->addRow();
+$row->addLabel('class', __('Class'))->description(__('Select class within a course/Subject.'));
+//$row->addYesNoRadio('class')->checked(!empty($selected)? 'Y' : 'N')->required();
+//$form->toggleVisibilityByClass('class')->onRadio('class')->when('Y');
+
+//$data = array('gibbonSchoolYearID' => $this->session->get('gibbonSchoolYearID'), 'gibbonPersonID' => $this->session->get('gibbonPersonID'));
+//$data = array('gibbonSchoolYearID' => $session->get('gibbonSchoolYearID'));
+$data = array('gibbonSchoolYearID' => $session->get('gibbonSchoolYearID'), 'gibbonPersonID' => $session->get('gibbonPersonID'));
+$sql = "SELECT gibbonCourseClass.gibbonCourseClassID as value, CONCAT(gibbonCourse.nameShort, '.', gibbonCourseClass.nameShort) as name
+    FROM gibbonCourse
+    JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID)
+    JOIN gibbonCourseClassPerson ON (gibbonCourseClassPerson.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID)
+    WHERE gibbonPersonID=:gibbonPersonID AND gibbonSchoolYearID=:gibbonSchoolYearID AND NOT role LIKE '%- Left' ORDER BY gibbonCourseClass.name";
+    $row = $form->addRow()->addClass('class bg-blue-100');
+        $row->addLabel('classes[]', __('Select Classes'));
+        $row->addSelect('classes[]')->fromQuery($pdo, $sql, $data)->selectMultiple()->setSize(6)->required()->selected($selected);
+//subcartegories
+        /*
+        if ($simpleCategories) {
         if (count($categoryOptions) > 0) {
             $row = $form->addRow();
                 $row->addLabel('category', __('Category'));
@@ -85,12 +113,26 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
                 ->placeholder()
                 ->required();
     }
-
-   $row = $form->addRow();
+    */
+/*    $row = $form->addRow();
+        $row->addLabel('gibbonCourseID', __('Course'));
+        $row->addSelect('gibbonCourseID')
+            ->placeholder();
+    $row = $form->addRow();
+    $row->addLabel('gibbonCourseClassIDMulti', __('Class'));
+    $row->addSelect('gibbonCourseClassIDMulti')
+        ->fromQuery($pdo, $sql, $data, 'groupBy')
+        ->selectMultiple()
+        ->required()
+        ->selected($gibbonCourseClassID);
+        */
+        //facility select
+ /* 
+        $row = $form->addRow();
         $row->addLabel('gibbonSpaceID', __('Facility'));
         $row->addSelectSpace('gibbonSpaceID')
             ->placeholder();
-    
+*/    
     $row = $form->addRow();
         $column = $row->addColumn();
             $column->addLabel('description', __('Description'));
@@ -98,7 +140,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
                     ->setRows(5)
                     ->showMedia()
                     ->required();
-        
+/*        
     if (count($priorityOptions) > 0) {
         $row = $form->addRow();
             $row->addLabel('priority', __($settingGateway->getSettingByScope($moduleName, 'recordsPriorityName')));
@@ -107,7 +149,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
                 ->placeholder()
                 ->required();
     }
-    
+*/    
     if ($techGroupGateway->getPermissionValue($session->get('gibbonPersonID'), 'createRecordsForOther')) {
         $row = $form->addRow();
             $row->addLabel('createFor', __('Create on behalf of'))
