@@ -44,6 +44,11 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
     $URL .= '/workRecord_create.php';
 
     $gibbonPersonID = $session->get('gibbonPersonID');
+        //get classes & save
+    $allSelectedClasses=$_POST['gibbonCourseClassID']?? [];    
+    //get classes
+    $gibbonCourseClassID=$_POST['gibbonCourseClassID']?? [];
+    $gibbonCourseClassID = implode(',', $gibbonCourseClassID);
 
     $data = [
         //Default data
@@ -54,11 +59,12 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
         'date' => date('Y-m-d'),
         //Data to get from Post or getSettingByScope
         'issueName' => '',
-        'category' => '',
-        'description' => '',
-        'gibbonSpaceID' => null,
-        'priority' => '',
-        'subcategoryID' => null,
+        'gibbonCourseClassID'=>$gibbonCourseClassID,
+//        'category' => '',
+        'contentCovered' => '',
+//        'gibbonSpaceID' => null,
+//        'priority' => '',
+//        'subcategoryID' => null,
     ];
 
     foreach ($data as $key => $value) {
@@ -84,10 +90,8 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
     $subcategoryGateway = $container->get(SubcategoryGateway::class);
     
     if (empty($data['issueName'])
-        || empty($data['description']) 
-        || (!in_array($data['category'], $categoryOptions) && count($categoryOptions) > 0 && $simpleCategories)
-        || (!$subcategoryGateway->exists($data['subcategoryID']) && !$simpleCategories)
-        || (!in_array($data['priority'], $priorityOptions) && count($priorityOptions) > 0)) {
+        || empty($data['contentCovered'])
+        || empty($data['gibbonCourseClassID'])) {
 
         $URL .= '&return=error1';
         header("Location: {$URL}");
@@ -95,6 +99,12 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
     } else {
         $issueGateway = $container->get(IssueGateway::class);
         $workrecordID = $issueGateway->insert($data);
+        //update other tables
+        foreach( $allSelectedClasses as $gibbonCourseClassID){
+        $data = array('gibbonCourseClassID' => $gibbonCourseClassID, 'workrecordID' => $workrecordID);
+        $sql = "INSERT INTO recordsOfWorkclasses SET gibbonCourseClassID=:gibbonCourseClassID, workrecordID=:workrecordID";
+        $gibbonPersonID = $pdo->insert($sql, $data);
+        }
         if ($workrecordID === false) {
             $URL .= '&return=error2';
             header("Location: {$URL}");
@@ -123,7 +133,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
 
         $techs = array_column($techs, 'gibbonPersonID');
 
-        $message = __('A new issue has been added') . ' (' . $data['issueName'] . ').';
+        $message = __('A new record of work has been added') . ' (' . $data['issueName'] . ').';
 
         foreach ($techs as $techPersonID) {
             $permission = $techGroupGateway->getPermissionValue($techPersonID, 'viewRecordsStatus');

@@ -17,7 +17,7 @@ class IssueGateway extends QueryableGateway
 
     private static $tableName = 'recordsOfWork';
     private static $primaryKey = 'workrecordID';
-    private static $searchableColumns = ['workrecordID', 'issueName', 'description'];
+    private static $searchableColumns = ['workrecordID', 'issueName', 'contentCovered'];
 
     public function selectActiveIssueByTechnician($qualityassuaranceID) {
         $select = $this
@@ -44,12 +44,12 @@ class IssueGateway extends QueryableGateway
         $query = $this
             ->newQuery()
             ->from('recordsOfWork')
-            ->cols(['recordsOfWork.*', 'techID.gibbonPersonID AS techPersonID', 'qualityAssuaranceDepartments.schoolYearGroup', 'recordsOfWorkclasses.className', 'recordsOfWorkclasses.departmentID', 'gibbonSpace.name AS facility'])
-            ->leftJoin('schoolQA AS techID', 'recordsOfWork.qualityassuaranceID=techID.qualityassuaranceID')
-            ->leftJoin('recordsOfWorkclasses', 'recordsOfWork.subcategoryID=recordsOfWorkclasses.subcategoryID')
-            ->leftJoin('qualityAssuaranceDepartments', 'recordsOfWorkclasses.departmentID=qualityAssuaranceDepartments.departmentID')
-            ->leftJoin('gibbonSpace', 'recordsOfWork.gibbonSpaceID=gibbonSpace.gibbonSpaceID');
-
+            ->cols(['recordsOfWork.*', 'schoolQA.gibbonPersonID AS techPersonID', 'recordsOfWorkclasses.className', 'recordsOfWorkclasses.gibbonCourseClassID'])
+            ->leftJoin('schoolQA AS schoolQA', 'recordsOfWork.qualityassuaranceID=schoolQA.qualityassuaranceID')
+            ->leftJoin('recordsOfWorkclasses', 'recordsOfWork.workrecordID=recordsOfWorkclasses.workrecordID');
+            //->leftJoin('qualityAssuaranceDepartments', 'recordsOfWorkclasses.gibbonCourseClassID=qualityAssuaranceDepartments.departmentID')
+            //->leftJoin('gibbonSpace', 'recordsOfWork.gibbonSpaceID=gibbonSpace.gibbonSpaceID')
+//, 'gibbonSpace.name AS facility'
         
         if ($relation == 'My Records') {
             $query->where('recordsOfWork.gibbonPersonID = :gibbonPersonID')
@@ -72,11 +72,11 @@ class IssueGateway extends QueryableGateway
                     $query->bindValue($bind, $department['departmentID']);
                 }
 
-                $query->where('recordsOfWorkclasses.departmentID IN (' . $inClause . ')');
+                $query->where('recordsOfWorkclasses.gibbonCourseClassID IN (' . $inClause . ')');
             }
 
             if ($relation == 'My Assigned') {
-                $query->where('techID.gibbonPersonID=:techPersonID')
+                $query->where('schoolQA.gibbonPersonID=:techPersonID')
                     ->bindValue('techPersonID', $gibbonPersonID);
             }
         }
@@ -92,6 +92,12 @@ class IssueGateway extends QueryableGateway
                     ->where('recordsOfWork.status = :status')
                     ->bindValue('status', $status);
             },
+            'createdByID' => function ($query, $createdByID) {
+                return $query
+                    ->where('recordsOfWork.category = :category')
+                    ->bindValue('category', $createdByID);
+            },
+/*
             'category' => function ($query, $category) {
                 return $query
                     ->where('recordsOfWork.category = :category')
@@ -109,9 +115,9 @@ class IssueGateway extends QueryableGateway
             },
             'departmentID' => function ($query, $departmentID) {
                 return $query
-                    ->where('recordsOfWorkclasses.departmentID = :departmentID')
+                    ->where('recordsOfWorkclasses.gibbonCourseClassID = :departmentID')
                     ->bindValue('departmentID', $departmentID);
-            },
+            },*/
              'startDate' => function ($query, $startDate) {
                 return $query
                     ->where('date >= :startDate')
@@ -131,8 +137,8 @@ class IssueGateway extends QueryableGateway
         $query = $this
             ->newQuery()
             ->from('recordsOfWork')
-            ->cols(['recordsOfWork.gibbonPersonID', 'techID.gibbonPersonID AS techPersonID', 'recordsOfWork.createdByID' ])
-            ->leftJoin('schoolQA AS techID', 'recordsOfWork.qualityassuaranceID=techID.qualityassuaranceID')
+            ->cols(['recordsOfWork.gibbonPersonID', 'schoolQA.gibbonPersonID AS techPersonID', 'recordsOfWork.createdByID' ])
+            ->leftJoin('schoolQA AS schoolQA', 'recordsOfWork.qualityassuaranceID=schoolQA.qualityassuaranceID')
             ->where('recordsOfWork.workrecordID = :workrecordID')
             ->bindValue('workrecordID', $workrecordID);
 
@@ -148,8 +154,8 @@ class IssueGateway extends QueryableGateway
         $query = $this
             ->newQuery()
             ->from('recordsOfWork')
-            ->cols(['recordsOfWork.gibbonPersonID', 'techID.gibbonPersonID AS techPersonID'])
-            ->leftJoin('schoolQA AS techID', 'recordsOfWork.qualityassuaranceID=techID.qualityassuaranceID')
+            ->cols(['recordsOfWork.gibbonPersonID', 'schoolQA.gibbonPersonID AS techPersonID'])
+            ->leftJoin('schoolQA AS schoolQA', 'recordsOfWork.qualityassuaranceID=schoolQA.qualityassuaranceID')
             ->where('recordsOfWork.workrecordID = :workrecordID')
             ->bindValue('workrecordID', $workrecordID);
 

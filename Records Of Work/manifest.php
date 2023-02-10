@@ -42,9 +42,9 @@ $moduleTables[] = "CREATE TABLE `recordsOfWork` (
     `createdByID` int(12) unsigned zerofill NOT NULL,
     `subcategoryID` int(4) UNSIGNED ZEROFILL DEFAULT NULL,
     `gibbonSpaceID` int(5) UNSIGNED ZEROFILL DEFAULT NULL,
-    `gibbonCourseClassID` int(10) unsigned zerofill NOT NULL,
-    `gibbonCourseID` int(10) unsigned zerofill NOT NULL,
-    `gibbonYearGroupID` int(10) unsigned zerofill NOT NULL,
+    `gibbonCourseClassID` varchar(100) NOT NULL,
+    `gibbonCourseID` int(10) unsigned zerofill DEFAULT NULL,
+    `gibbonYearGroupID` int(10) unsigned zerofill DEFAULT NULL,
     PRIMARY KEY (`workrecordID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
@@ -112,10 +112,11 @@ $moduleTables[] = "CREATE TABLE `qualityAssuaranceGroupDepartment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 $moduleTables[] = "CREATE TABLE `recordsOfWorkclasses` (
-    `subcategoryID` int(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `departmentID` int(4) unsigned zerofill NOT NULL,
+    `classID` int(12) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `workrecordID` int(12) unsigned zerofill NOT NULL,
+    `gibbonCourseClassID` int(12) unsigned zerofill NOT NULL,
     `className` varchar(55) NOT NULL,
-    PRIMARY KEY (`subcategoryID`)
+    PRIMARY KEY (`classID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 $moduleTables[] = "CREATE TABLE `recordsOfWporkReplyTemplate` (

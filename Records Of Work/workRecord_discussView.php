@@ -94,7 +94,7 @@ if (!isModuleAccessible($guid, $connection2)) {
 
             if ($isResolved) {
                 if ($isPersonsIssue || ($isRelated && $techGroupGateway->getPermissionValue($gibbonPersonID, 'undoRecordsChecked')) || $hasFullAccess) {
-                    $table->addHeaderAction('reincarnate', __('Reincarnate'))
+                    $table->addHeaderAction('reincarnate', __('Mark as Incomplete'))
                             ->setIcon('reincarnate')
                             ->directLink()
                             ->setURL('/modules/' . $session->get('module') . '/workRecord_reincarnateProcess.php')
@@ -103,14 +103,14 @@ if (!isModuleAccessible($guid, $connection2)) {
             } else {
                 if (!$hasTechAssigned) {
                      if ($techGroupGateway->getPermissionValue($gibbonPersonID, 'acceptRecords') && !$isPersonsIssue) {
-                        $table->addHeaderAction('accept', __('Accept'))
+                        $table->addHeaderAction('accept', __('Review | Comment'))
                                 ->setIcon('page_new')
                                 ->directLink()
                                 ->setURL('/modules/' . $session->get('module') . '/workRecord_acceptProcess.php')
                                 ->addParam('workrecordID', $workrecordID);
                     }
                     if (($techGroupGateway->getPermissionValue($gibbonPersonID, 'assignRecords') && !$isPersonsIssue) || $hasFullAccess) {
-                        $table->addHeaderAction('assign', __('Assign'))
+                        $table->addHeaderAction('assign', __('Assign for Further check'))
                                 ->setIcon('attendance')
                                 ->modalWindow()
                                 ->setURL('/modules/' . $session->get('module') . '/workRecord_assign.php')
@@ -123,7 +123,7 @@ if (!isModuleAccessible($guid, $connection2)) {
                             ->addParam('workrecordID', $workrecordID);
 
                     if (($techGroupGateway->getPermissionValue($gibbonPersonID, 'reassignRecords') && !$isPersonsIssue) || $hasFullAccess) {
-                        $table->addHeaderAction('reassign', __('Reassign'))
+                        $table->addHeaderAction('reassign', __('Let another HOD review'))
                                 ->setIcon('attendance')
                                 ->modalWindow()
                                 ->setURL('/modules/' . $session->get('module') . '/workRecord_assign.php')
@@ -132,7 +132,7 @@ if (!isModuleAccessible($guid, $connection2)) {
                 }
 
                 if ($isPersonsIssue || ($isRelated && $techGroupGateway->getPermissionValue($gibbonPersonID, 'recordsChecked')) || $hasFullAccess) {
-                    $table->addHeaderAction('resolve', __('Resolve'))
+                    $table->addHeaderAction('resolve', __('Mark as Complete'))
                             ->setIcon('iconTick')
                             ->directLink()
                             ->setURL('/modules/' . $session->get('module') . '/workRecord_resolveProcess.php')
@@ -140,12 +140,13 @@ if (!isModuleAccessible($guid, $connection2)) {
                 }
             }
 
-            $table->addColumn('workrecordID', __('ID'))
-                    ->format(Format::using('number', ['workrecordID', 0]));
+            //$table->addColumn('workrecordID', __('ID'))
+            //        ->format(Format::using('number', ['workrecordID', 0]));
 
-            $table->addColumn('owner', __('Owner'));
+            $table->addColumn('owner', __("Teacher's Name"));
+            $table->addColumn($issue['gibbonCourseClassID'],__('Classes'));
 
-            $table->addColumn('technician', __('QA'));
+            $table->addColumn('technician', __('Status'));
 
             $table->addColumn('date', __('Date'));
 
@@ -161,8 +162,8 @@ if (!isModuleAccessible($guid, $connection2)) {
 
             $table->addMetaData('gridClass', 'grid-cols-' . count($detailsData));
 
-            $detailsData['description'] = $issue['description'];
-            $table->addColumn('description', __('Description'))->addClass('col-span-10');
+            $detailsData['contentCovered'] = $issue['contentCovered'];
+            $table->addColumn('contentCovered', __('Content Covered'))->addClass('col-span-10');
 
             echo $table->render([$detailsData]);
 

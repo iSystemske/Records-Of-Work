@@ -156,7 +156,7 @@ if (!isModuleAccessible($guid, $connection2)) {
     $recordOfWork = $issueGateway->queryRecords($criteria, $gibbonPersonID, $relation, $techViewIssueStatus, $techDepartments);
 
     $table = DataTable::createPaginated('records', $criteria);
-    $table->setTitle('Records');
+    $table->setTitle('Records of Work');
 
     //FILTERS START
     $statusFilter = [
@@ -207,12 +207,12 @@ if (!isModuleAccessible($guid, $connection2)) {
             $gibbonRoleID = $session->get('gibbonRoleIDCurrent');
             $departmentPermissionGateway = $container->get(DepartmentPermissionsGateway::class);
             $departmentPermissionCriteria = $departmentPermissionGateway->newQueryCriteria()
-                ->filterBy('gibbonRoleID', $gibbonRoleID)
-                ->sortBy(['schoolYearGroup']);
+                ->filterBy('gibbonRoleID', $gibbonRoleID);
+                //->sortBy(['schoolYearGroup']);
 
             $departments = $departmentPermissionGateway->queryDeptPerms($departmentPermissionCriteria);
         }
-
+/*
         $subcategoryGateway = $container->get(SubcategoryGateway::class);
         foreach ($departments as $department) {
             $table->addMetaData('filterOptions', [
@@ -230,6 +230,7 @@ if (!isModuleAccessible($guid, $connection2)) {
                 ]);
             }
         }
+        */
     }
 
     $priorityFilters = explodeTrim($settingsGateway->getSettingByScope($moduleName, 'recordsPriority', false));
@@ -259,20 +260,27 @@ if (!isModuleAccessible($guid, $connection2)) {
             ->setURL('/modules/' . $moduleName . '/workRecord_create.php')
             ->displayLabel();
     }
-
+/*
     //Record Of Work ID column
     $table->addColumn('workrecordID', __('Record Of Work ID'))
             ->format(Format::using('number', ['workrecordID']));
-
+*/
     //Subject & Description Column
-    $table->addColumn('issueName', __('Subject'))
-          ->description(__('Description'))
+    $table->addColumn('issueName', __('Week'))
           ->format(function ($issue) {
-            return Format::bold($issue['issueName']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['description']), 50));
+            return Format::bold($issue['issueName']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['description']), 100));
           });
+    
+    //add content display column
+    $table->addColumn('contentCovered', __('Content Covered'))
+    ->format(function ($issue) {
+      return Format::bold($issue['contentCovered']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['contentCovered']), 50));
+    });
+    //add classes
+    
 
     //Owner & QA Column
-    $table->addColumn('gibbonPersonID', __('Owner'))
+/*    $table->addColumn('gibbonPersonID', __('To be checked By'))
                 ->description(__('QA'))
                 ->format(function ($row) use ($userGateway) {
                     $owner = $userGateway->getByID($row['gibbonPersonID']);
@@ -284,10 +292,10 @@ if (!isModuleAccessible($guid, $connection2)) {
                     }
 
                     return $output;
-                });
-
+                              });
+*/
     //Facility & Category Column
-    $table->addColumn('facility', __('Facility'))
+/*    $table->addColumn('facility', __('Facility'))
         ->description(__('Category'))
         ->format(function ($row) use ($simpleCategories) {
             $facility = $row['facility'] ?? 'N/A';
@@ -304,7 +312,7 @@ if (!isModuleAccessible($guid, $connection2)) {
     if (!empty($priorityFilters)) {
         $table->addColumn('priority', __($settingsGateway->getSettingByScope($moduleName, 'recordsPriorityName')));
     }
-
+*/
     //Status & Date Column
     $table->addColumn('status', __('Status'))
           ->description(__('Date'))
@@ -343,14 +351,14 @@ if (!isModuleAccessible($guid, $connection2)) {
                     }
 
                     if ($isPersonsIssue || ($related && $techGroupGateway->getPermissionValue($gibbonPersonID, 'recordsChecked'))) {
-                        $actions->addAction('resolve', __('Resolve'))
+                        $actions->addAction('resolve', __('Mark Complete'))
                                 ->directLink()
                                 ->setURL('/modules/' . $moduleName . '/workRecord_resolveProcess.php')
                                 ->setIcon('iconTick');
                     }
                 } else {
                     if ($isPersonsIssue || ($related && $techGroupGateway->getPermissionValue($gibbonPersonID, 'undoRecordsChecked'))) {
-                        $actions->addAction('reincarnate', __('Reincarnate'))
+                        $actions->addAction('reincarnate', __('Mark as Incomplete'))
                                 ->directLink()
                                 ->setURL('/modules/' . $moduleName . '/workRecord_reincarnateProcess.php')
                                 ->setIcon('reincarnate');

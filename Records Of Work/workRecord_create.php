@@ -65,8 +65,9 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
             ->maxLength(55);
     
 //classes
+
 $row = $form->addRow();
-$row->addLabel('class', __('Class'))->description(__('Select class within a course/Subject.'));
+$row->addLabel('gibbonCourseClassID', __('Class'))->description(__('Select class within a course/Subject.'));
 //$row->addYesNoRadio('class')->checked(!empty($selected)? 'Y' : 'N')->required();
 //$form->toggleVisibilityByClass('class')->onRadio('class')->when('Y');
 
@@ -79,8 +80,13 @@ $sql = "SELECT gibbonCourseClass.gibbonCourseClassID as value, CONCAT(gibbonCour
     JOIN gibbonCourseClassPerson ON (gibbonCourseClassPerson.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID)
     WHERE gibbonPersonID=:gibbonPersonID AND gibbonSchoolYearID=:gibbonSchoolYearID AND NOT role LIKE '%- Left' ORDER BY gibbonCourseClass.name";
     $row = $form->addRow()->addClass('class bg-blue-100');
-        $row->addLabel('classes[]', __('Select Classes'));
-        $row->addSelect('classes[]')->fromQuery($pdo, $sql, $data)->selectMultiple()->setSize(6)->required()->selected($selected);
+        $row->addLabel('gibbonCourseClassID', __('Select Classes'));
+        $row->addCheckbox('gibbonCourseClassID')->fromQuery($pdo, $sql, $data);
+        //->selectMultiple()->setSize(6)->required()->selected($selected);
+    
+        //$row = $form->addRow();
+        //$row->addLabel('gibbonYearGroupIDList', __('Year Groups'))->description(__('Enrolable year groups.'));
+        //$row->addCheckboxYearGroup('gibbonYearGroupIDList');
 //subcartegories
         /*
         if ($simpleCategories) {
@@ -128,15 +134,15 @@ $sql = "SELECT gibbonCourseClass.gibbonCourseClassID as value, CONCAT(gibbonCour
         */
         //facility select
  /* 
-        $row = $form->addRow();
+        $row = $form->addRow();`
         $row->addLabel('gibbonSpaceID', __('Facility'));
         $row->addSelectSpace('gibbonSpaceID')
             ->placeholder();
 */    
     $row = $form->addRow();
         $column = $row->addColumn();
-            $column->addLabel('description', __('Description'));
-            $column->addEditor('description', $guid)
+            $column->addLabel('contentCovered', __('Content Covered'));
+            $column->addEditor('contentCovered', $guid)
                     ->setRows(5)
                     ->showMedia()
                     ->required();
