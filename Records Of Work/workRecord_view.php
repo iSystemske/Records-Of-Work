@@ -32,6 +32,7 @@ use Gibbon\Module\RecordsOfWork\Domain\SubcategoryGateway;
 use Gibbon\Module\RecordsOfWork\Domain\TechGroupGateway;
 use Gibbon\Module\RecordsOfWork\Domain\TechnicianGateway;
 use Gibbon\Domain\System\SettingGateway;
+use Gibbon\Domain\Timetable\CourseGateway;
 
 //Module includes
 require_once __DIR__ . '/moduleFunctions.php';
@@ -273,11 +274,40 @@ if (!isModuleAccessible($guid, $connection2)) {
     
     //add content display column
     $table->addColumn('contentCovered', __('Content Covered'))
-    ->format(function ($issue) {
+    ->format(function ($issue){
       return Format::bold($issue['contentCovered']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['contentCovered']), 50));
     });
     //add classes
-    
+   $table->addColumn('gibbonCourseClassID', __('Classes'))
+         ->format(function($row) use ($courseGateway,$page){
+            //$courseGateway = $container->get(CourseGateway::class);
+            //$gibbonC=$issue['rgibbonCourseClassID'];
+            //$gibbonCourseClassID=$gibbonC['rgibbonCourseClassID'];
+            if(array_key_exists('gibbonCourseClassID',$row)){
+                //$gibbonCourseClassID=$issue['rgibbonCourseClassID'];
+                $gibbonCourseClassID = $courseGateway->getCourseClassByID($row['gibbonCourseClassID']);
+       $class= Format::courseClassName($gibbonCourseClassID['course'], $gibbonCourseClassID['class']);
+                echo $class;
+            } else {
+                $page ->addError(__('No ID'));
+                echo'no ID';
+            }
+            //lets go
+//            return $gibbonCourseClassID;
+// 
+        });
+//            {
+  //          }*/
+//           $classes = $issue['rgibbonCourseClassID'],
+//            $out = Format::keyValue($issue, 'rgibbonCourseClassID', function($item){
+ //               $output = Format::bold(Format::courseClassName($item['course'], $item['class']));
+ //               return $output;            
+  //          })
+   //     );
+            //$classes=$courseClassGateway->selectBy($issue['gibbonCourseClassID']);
+            //}
+            //return $output;
+       // });
 
     //Owner & QA Column
 /*    $table->addColumn('gibbonPersonID', __('To be checked By'))
@@ -313,6 +343,12 @@ if (!isModuleAccessible($guid, $connection2)) {
         $table->addColumn('priority', __($settingsGateway->getSettingByScope($moduleName, 'recordsPriorityName')));
     }
 */
+    //add teacher
+    $table->addColumn('gibbonPersonID', __('Teacher'))
+          ->format(function($row) use($userGateway){
+            $teacher = $userGateway->getByID($row['gibbonPersonID']);
+            return '<li>'.Format::name($teacher['title'], $teacher['preferredName'], $teacher['surname'], 'Staff').'</li>';
+          });
     //Status & Date Column
     $table->addColumn('status', __('Status'))
           ->description(__('Date'))

@@ -44,9 +44,9 @@ class IssueGateway extends QueryableGateway
         $query = $this
             ->newQuery()
             ->from('recordsOfWork')
-            ->cols(['recordsOfWork.*', 'schoolQA.gibbonPersonID AS techPersonID', 'recordsOfWorkclasses.className', 'recordsOfWorkclasses.gibbonCourseClassID'])
-            ->leftJoin('schoolQA AS schoolQA', 'recordsOfWork.qualityassuaranceID=schoolQA.qualityassuaranceID')
-            ->leftJoin('recordsOfWorkclasses', 'recordsOfWork.workrecordID=recordsOfWorkclasses.workrecordID');
+            ->cols(['recordsOfWork.*', 'schoolQA.gibbonPersonID AS techPersonID', 'recordsOfWorkclasses.className', 'recordsOfWorkclasses.gibbonCourseClassID as rgibbonCourseClassID'])
+            ->leftJoin('recordsOfWorkclasses', 'recordsOfWork.workrecordID=recordsOfWorkclasses.workrecordID')
+            ->leftJoin('schoolQA AS schoolQA', 'recordsOfWork.qualityassuaranceID=schoolQA.qualityassuaranceID');
             //->leftJoin('qualityAssuaranceDepartments', 'recordsOfWorkclasses.gibbonCourseClassID=qualityAssuaranceDepartments.departmentID')
             //->leftJoin('gibbonSpace', 'recordsOfWork.gibbonSpaceID=gibbonSpace.gibbonSpaceID')
 //, 'gibbonSpace.name AS facility'
@@ -137,8 +137,9 @@ class IssueGateway extends QueryableGateway
         $query = $this
             ->newQuery()
             ->from('recordsOfWork')
-            ->cols(['recordsOfWork.gibbonPersonID', 'schoolQA.gibbonPersonID AS techPersonID', 'recordsOfWork.createdByID' ])
+            ->cols(['recordsOfWork.gibbonPersonID', 'schoolQA.gibbonPersonID AS techPersonID', 'recordsOfWork.createdByID','recordsOfWorkclasses.gibbonCourseClassID as rgibbonCourseClassID'])
             ->leftJoin('schoolQA AS schoolQA', 'recordsOfWork.qualityassuaranceID=schoolQA.qualityassuaranceID')
+            ->leftJoin('recordsOfWorkclasses', 'recordsOfWork.workrecordID=recordsOfWorkclasses.workrecordID')
             ->where('recordsOfWork.workrecordID = :workrecordID')
             ->bindValue('workrecordID', $workrecordID);
 

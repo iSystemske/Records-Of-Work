@@ -16,21 +16,21 @@ class SubcategoryGateway extends QueryableGateway
     use TableAware;
 
     private static $tableName = 'recordsOfWorkclasses';
-    private static $primaryKey = 'subcategoryID';
+    private static $primaryKey = 'classID';
     private static $searchableColumns = [];
 
-    public function querySubcategories($criteria) {
+    public function queryRecordsClasses($criteria) {
         $query = $this
             ->newQuery()
             ->from('recordsOfWorkclasses')
-            ->cols(['subcategoryID', 'className', 'recordsOfWorkclasses.departmentID', 'schoolYearGroup', 'departmentDesc'])
+            ->cols(['classID', 'className', 'recordsOfWorkclasses.departmentID', 'schoolYearGroup', 'departmentDesc'])
             ->leftjoin('qualityAssuaranceDepartments', 'recordsOfWorkclasses.departmentID=qualityAssuaranceDepartments.departmentID');
 
         $criteria->addFilterRules([
-            'subcategoryID' => function ($query, $subcategoryID) {
+            'classID' => function ($query, $classID) {
                 return $query
-                    ->where('recordsOfWorkclasses.subcategoryID = :subcategoryID')
-                    ->bindValue('subcategoryID', $subcategoryID);
+                    ->where('recordsOfWorkclasses.classID = :classID')
+                    ->bindValue('classID', $classID);
             },
             'departmentID' => function ($query, $departmentID) {
                 return $query
@@ -49,15 +49,15 @@ class SubcategoryGateway extends QueryableGateway
         return $this->runQuery($query, $criteria);
     }
 
-    public function deleteSubcategory($subcategoryID) {
+    public function deleteSubcategory($classID) {
         $this->db()->beginTransaction();
 
         $query = $this
             ->newUpdate()
             ->table('recordsOfWork')
-            ->set('subcategoryID', NULL)
-            ->where('subcategoryID = :subcategoryID')
-            ->bindValue('subcategoryID', $subcategoryID);
+            ->set('classID', NULL)
+            ->where('classID = :classID')
+            ->bindValue('classID', $classID);
 
         $this->runUpdate($query);
 
@@ -66,7 +66,7 @@ class SubcategoryGateway extends QueryableGateway
             return false;
         }
 
-        $this->delete($subcategoryID);
+        $this->delete($classID);
 
         if (!$this->db()->getQuerySuccess()) {
             $this->db()->rollBack();
