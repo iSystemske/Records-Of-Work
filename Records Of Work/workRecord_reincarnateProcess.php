@@ -73,7 +73,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
         $notificationGateway = $container->get(NotificationGateway::class);
         $notificationSender = new NotificationSender($notificationGateway, $session);
 
-        $message = __('Record Of Work #') . $workrecordID . ' (' . $issue['issueName'] . ') ' . __('has been reincarnated.');
+        $message = __('Record Of Work #') . $workrecordID . ' (' . $issue['weekNumber'] . ') ' . __('has been reincarnated.');
 
         $personIDs = $issueGateway->getPeopleInvolved($workrecordID);
 

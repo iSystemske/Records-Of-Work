@@ -104,7 +104,7 @@ if (!isActionAccessible($guid, $connection2, "/modules/Records Of Work/recordsOf
 
                     $issue = $issueGateway->getByID($array['workrecordID']);
                     if (!empty($issue)) {
-                        return Format::link('./index.php?q=/modules/Records Of Work/workRecord_discussView.php&workrecordID=' . $issue['workrecordID'], $issue['issueName']);
+                        return Format::link('./index.php?q=/modules/Records Of Work/workRecord_discussView.php&workrecordID=' . $issue['workrecordID'], $issue['weekNumber']);
                     }
 
                     return __('Could not find Record Of Work.');

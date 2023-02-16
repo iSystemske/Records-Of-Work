@@ -146,7 +146,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I = $this;
         $I->clickNavigation('Create');
         $I->seeBreadcrumb('Create Record Of Work');
-        $I->fillField('issueName', 'Test Record Of Work');
+        $I->fillField('weekNumber', 'Test Record Of Work');
         $I->fillField('description', '<p>Test Description</p>');
         $I->selectFromDropdown('subcategoryID', -2);
         $I->selectFromDropdown('gibbonSpaceID', 2);
@@ -160,7 +160,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I = $this;
         $I->clickNavigation('Create');
         $I->seeBreadcrumb('Create Record Of Work');
-        $I->fillField('issueName', 'Test Record Of Work');
+        $I->fillField('weekNumber', 'Test Record Of Work');
         $I->fillField('description', '<p>Test Description</p>');
         $I->selectFromDropdown('category', 2);
         $I->selectFromDropdown('gibbonSpaceID', 2);
@@ -175,7 +175,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I = $this;
         $I->clickNavigation('Create');
         $I->seeBreadcrumb('Create Record Of Work');
-        $I->fillField('issueName', 'Test Record Of Work');
+        $I->fillField('weekNumber', 'Test Record Of Work');
         $I->fillField('description', '<p>Test Description</p>');
         $I->selectFromDropdown('subcategoryID', -2);
         $I->selectFromDropdown('gibbonSpaceID', 2);
@@ -191,7 +191,7 @@ class AcceptanceTester extends \Codeception\Actor
         $I = $this;
         $I->clickNavigation('Create');
         $I->seeBreadcrumb('Create Record Of Work');
-        $I->fillField('issueName', 'Test Record Of Work');
+        $I->fillField('weekNumber', 'Test Record Of Work');
         $I->fillField('description', '<p>Test Description</p>');
         $I->selectFromDropdown('category', 2);
         $I->selectFromDropdown('gibbonSpaceID', 2);

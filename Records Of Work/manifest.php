@@ -22,7 +22,7 @@ $name           = 'Records Of Work';
 $description    = 'Allows Teachers to keep weekly records.';
 $entryURL       = 'workRecord_view.php';
 $type           = 'Additional';
-$category       = 'Other';
+$category       = 'Learn';
 $version        = '2.2.00';
 $author         = 'Kelvin';
 $url            = 'https://github.com/kelvinmw';
@@ -32,7 +32,7 @@ $moduleTables[] = "CREATE TABLE `recordsOfWork` (
     `workrecordID` int(12) unsigned zerofill NOT NULL AUTO_INCREMENT,
     `qualityassuaranceID` int(4) unsigned zerofill DEFAULT NULL,
     `gibbonPersonID` int(10) unsigned zerofill NOT NULL,
-    `issueName` varchar(55) NOT NULL,
+    `weekNumber` varchar(55) NOT NULL,
     `contentCovered` text NOT NULL,
     `date` date NOT NULL,
     `status` ENUM('completed','InReview','Submitted') DEFAULT 'Submitted',
@@ -115,7 +115,7 @@ $moduleTables[] = "CREATE TABLE `recordsOfWorkclasses` (
     `classID` int(12) unsigned zerofill NOT NULL AUTO_INCREMENT,
     `workrecordID` int(12) unsigned zerofill NOT NULL,
     `gibbonCourseClassID` int(12) unsigned zerofill NOT NULL,
-    `className` varchar(55) NOT NULL,
+    `className` varchar(55),
     PRIMARY KEY (`classID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
@@ -196,10 +196,10 @@ $actionRows[] = [
 ];
 
 $actionRows[] = [
-    'name'                      => 'Manage Technicians',
+    'name'                      => 'Quality Assuarance',
     'precedence'                => '0',
-    'category'                  => 'QA',
-    'description'               => 'Allows the user to manage the Technicians.',
+    'category'                  => 'Quality Assuarance',
+    'description'               => 'Allows the user to manage the Quality Assuarance.',
     'URLList'                   => 'recordsOfWork_manageTechnicians.php',
     'entryURL'                  => 'recordsOfWork_manageTechnicians.php',
     'defaultPermissionAdmin'    => 'Y',
@@ -216,8 +216,8 @@ $actionRows[] = [
 $actionRows[] = [
     'name'                      => 'Manage QA Groups',
     'precedence'                => '0',
-    'category'                  => 'QA',
-    'description'               => 'Allows the user to manage the Technicians Groups.',
+    'category'                  => 'Quality Assuarance',
+    'description'               => 'Allows the user to manage the QA Groups.',
     'URLList'                   => 'recordsOfWork_manageTechnicianGroup.php',
     'entryURL'                  => 'recordsOfWork_manageTechnicianGroup.php',
     'defaultPermissionAdmin'    => 'Y',
@@ -252,7 +252,7 @@ $actionRows[] = [
 $actionRows[] = [
     'name'                      => 'Manage Departments',
     'precedence'                => '0',
-    'category'                  => 'QA',
+    'category'                  => 'Quality Assuarance',
     'description'               => 'Allows the user to manage the Records Of Work Departments.',
     'URLList'                   => 'recordsOfWork_manageDepartments.php',
     'entryURL'                  => 'recordsOfWork_manageDepartments.php',

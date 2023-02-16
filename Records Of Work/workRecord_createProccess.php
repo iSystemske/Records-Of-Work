@@ -60,7 +60,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
         'gibbonSchoolYearID' => $session->get('gibbonSchoolYearID'),
         'date' => $date,
         //Data to get from Post or getSettingByScope
-        'issueName' => '',
+        'weekNumber' => '',
         'gibbonCourseClassID'=>$gibbonCourseClassID,
 //        'category' => '',
         'contentCovered' => '',
@@ -91,7 +91,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
 
     $subcategoryGateway = $container->get(SubcategoryGateway::class);
     
-    if (empty($data['issueName'])
+    if (empty($data['weekNumber'])
         || empty($data['contentCovered'])
         || empty($data['gibbonCourseClassID'])) {
 
@@ -119,7 +119,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
 
         //Notify issue owner, if created on their behalf
         if ($createdOnBehalf) {
-            $message = __('A new issue has been created on your behalf, Record Of Work #') . $workrecordID . '(' . $data['issueName'] . ').';
+            $message = __('A new issue has been created on your behalf, Record Of Work #') . $workrecordID . '(' . $data['weekNumber'] . ').';
             $notificationSender->addNotification($data['gibbonPersonID'], $message, 'Records Of Work', '/index.php?q=/modules/Records Of Work/workRecord_discussView.php&workrecordID=' . $workrecordID);
         }
 
@@ -135,7 +135,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
 
         $techs = array_column($techs, 'gibbonPersonID');
 
-        $message = __('A new record of work has been added') . ' (' . $data['issueName'] . ').';
+        $message = __('A new record of work has been added') . ' (' . $data['weekNumber'] . ').';
 
         foreach ($techs as $techPersonID) {
             $permission = $techGroupGateway->getPermissionValue($techPersonID, 'viewRecordsStatus');

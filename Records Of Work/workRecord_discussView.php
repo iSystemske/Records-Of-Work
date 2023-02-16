@@ -95,7 +95,7 @@ if (!isModuleAccessible($guid, $connection2)) {
             ];
 
             $table = DataTable::createDetails('details');
-            $table->setTitle($issue['issueName']);
+            $table->setTitle($issue['weekNumber']);
             $table->addMetaData('allowHTML', ['description']);
 
             if ($isResolved) {

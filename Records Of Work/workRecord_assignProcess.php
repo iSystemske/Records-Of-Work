@@ -103,7 +103,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
     $notificationGateway = $container->get(NotificationGateway::class);
     $notificationSender = new NotificationSender($notificationGateway, $session);
 
-    $message = Format::name($technician['title'], $technician['preferredName'], $technician['surname'], 'Student') . __(" has been $assign Record Of Work #") . $workrecordID . '(' . $issue['issueName'] . ').';
+    $message = Format::name($technician['title'], $technician['preferredName'], $technician['surname'], 'Student') . __(" has been $assign Record Of Work #") . $workrecordID . '(' . $issue['weekNumber'] . ').';
 
     $personIDs = $issueGateway->getPeopleInvolved($workrecordID);
 

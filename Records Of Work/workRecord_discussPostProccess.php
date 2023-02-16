@@ -91,7 +91,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
         $notificationGateway = $container->get(NotificationGateway::class);
         $notificationSender = new NotificationSender($notificationGateway, $session); 
 
-        $message = __('A new message has been added to Record Of Work #') . $workrecordID . ' (' . $issue['issueName'] . ').';
+        $message = __('A new message has been added to Record Of Work #') . $workrecordID . ' (' . $issue['weekNumber'] . ').';
 
         $personIDs = $issueGateway->getPeopleInvolved($workrecordID);
 

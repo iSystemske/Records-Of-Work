@@ -141,7 +141,7 @@ v1.0.01
 Fixed Default groups not being added when first installing.
 Added Gibbon v10 Compatibility.
 Fixed date not passing through in when creating a record of work.
-Fixed %issueName% showing up in recordsOfWork_statisticsDetail.php.
+Fixed %weekNumber% showing up in recordsOfWork_statisticsDetail.php.
 
 v1.0.00
 -------

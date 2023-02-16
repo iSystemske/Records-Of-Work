@@ -17,13 +17,13 @@ class IssueGateway extends QueryableGateway
 
     private static $tableName = 'recordsOfWork';
     private static $primaryKey = 'workrecordID';
-    private static $searchableColumns = ['workrecordID', 'issueName', 'contentCovered'];
+    private static $searchableColumns = ['workrecordID', 'weekNumber', 'contentCovered'];
 
     public function selectActiveIssueByTechnician($qualityassuaranceID) {
         $select = $this
             ->newSelect()
             ->from('recordsOfWork')
-            ->cols(['workrecordID', 'issueName'])
+            ->cols(['workrecordID', 'weekNumber'])
             ->where('qualityassuaranceID = :qualityassuaranceID')
             ->bindValue('qualityassuaranceID', $qualityassuaranceID)
             ->where('status = \'InReview\'')

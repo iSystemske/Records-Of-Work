@@ -268,10 +268,10 @@ if (!isModuleAccessible($guid, $connection2)) {
             ->format(Format::using('number', ['workrecordID']));
 */
     //Subject & Description Column
-    $table->addColumn('issueName', __('Week'))
-          ->description(__('issueName'))
+    $table->addColumn('weekNumber', __('Week'))
+          ->description(__('weekNumber'))
           ->format(function ($issue) {
-            return Format::bold($issue['issueName']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['description']), 100));
+            return Format::bold($issue['weekNumber']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['description']), 100));
           });
     
     //add content display column

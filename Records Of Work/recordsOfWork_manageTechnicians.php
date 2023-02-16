@@ -42,7 +42,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/recordsOf
         }
 
         $recordOfWork = array_map(function($issue) use ($moduleName) {
-            return Format::link('./index.php?q=/modules/' . $moduleName. '/workRecord_discussView.php&workrecordID='. $issue['workrecordID'], $issue['issueName']);
+            return Format::link('./index.php?q=/modules/' . $moduleName. '/workRecord_discussView.php&workrecordID='. $issue['workrecordID'], $issue['weekNumber']);
         }, $recordOfWork);
 
         return implode(', ', $recordOfWork);

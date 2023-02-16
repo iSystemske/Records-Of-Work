@@ -57,9 +57,9 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
         // Class
 //end test    */
     $row = $form->addRow();
-        $row->addLabel('issueName', __('Record Of Work for :'))
+        $row->addLabel('weekNumber', __('Record Of Work for :'))
             ->description(__('use the format shown. (type "Week 1 or Week 2 ..")'));
-        $row->addTextField('issueName')
+        $row->addTextField('weekNumber')
             ->placeholder('Week 0')
             ->required()
             ->maxLength(55);
