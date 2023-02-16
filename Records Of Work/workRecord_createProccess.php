@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-
+use Gibbon\Services\Format;
 use Gibbon\Comms\NotificationSender;
 use Gibbon\Domain\System\LogGateway;
 use Gibbon\Domain\System\NotificationGateway;
@@ -49,6 +49,8 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
     //get classes
     $gibbonCourseClassID=$_POST['gibbonCourseClassID']?? [];
     $gibbonCourseClassID = implode(',', $gibbonCourseClassID);
+    //cleandate
+    $date = Format::dateConvert($_POST['date']);
 
     $data = [
         //Default data
@@ -56,7 +58,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
         'createdByID' => $gibbonPersonID,
         'status' => 'Submitted',
         'gibbonSchoolYearID' => $session->get('gibbonSchoolYearID'),
-        'date' => date('Y-m-d'),
+        'date' => $date,
         //Data to get from Post or getSettingByScope
         'issueName' => '',
         'gibbonCourseClassID'=>$gibbonCourseClassID,

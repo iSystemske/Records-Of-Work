@@ -49,6 +49,7 @@ if (!isModuleAccessible($guid, $connection2)) {
     $schoolYear = $container->get(SchoolYearGateway::class)->getByID($session->get('gibbonSchoolYearID'), ['firstDay', 'lastDay']);
     $startDate = isset($_GET['startDate']) ? Format::dateConvert($_GET['startDate']) : ($schoolYear['firstDay'] ?? null);
     $endDate = isset($_GET['endDate']) ? Format::dateConvert($_GET['endDate']) : ($schoolYear['lastDay'] ?? null);
+    $startDate = Format::dateConvert("-7 day", $endDate);
     
     $relation = $_GET['relation'] ?? null;
 
@@ -113,14 +114,14 @@ if (!isModuleAccessible($guid, $connection2)) {
         $row->addTextField('search')
             ->setValue($criteria->getSearchText());
 
-    if (count($relations) > 1) {
+ /*   if (count($relations) > 1) {
         $row = $form->addRow()->addClass('advancedOptions hidden');
             $row->addLabel('relation', __('Relation'));
-            $row->addSelect('relation')
+            $row->addHiddenValue('relation')
                 ->fromArray($relations)
                 ->selected($relation);
     }
-
+*/
     $row = $form->addRow()->addClass('advancedOptions hidden');
         $row->addLabel('startDate', __('Start Date Filter'));
         $row->addDate('startDate')
@@ -352,7 +353,7 @@ if (!isModuleAccessible($guid, $connection2)) {
     $table->addColumn('gibbonPersonID', __('Teacher'))
           ->format(function($row) use($userGateway){
             $teacher = $userGateway->getByID($row['gibbonPersonID']);
-            return '<li>'.Format::name($teacher['title'], $teacher['preferredName'], $teacher['surname'], 'Staff').'</li>';
+            return '<li>'.Format::name($teacher['title'], '', $teacher['preferredName']).'</li>';
           });
     //Status & Date Column
     $table->addColumn('status', __('Status'))

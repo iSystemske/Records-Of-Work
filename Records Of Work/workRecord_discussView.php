@@ -32,7 +32,9 @@ use Gibbon\Domain\System\DiscussionGateway;
 use Gibbon\Domain\System\SettingGateway;
 use Gibbon\Domain\User\UserGateway;
 use Gibbon\Domain\School\FacilityGateway;
+use Gibbon\Domain\Timetable\CourseGateway;
 use Gibbon\View\View;
+use Google\Service\FirebaseRules\Issue;
 
 $page->breadcrumbs->add(__('Discuss Record Of Work'));
 
@@ -81,11 +83,15 @@ if (!isModuleAccessible($guid, $connection2)) {
             } else {
                 $ownerRole = 'Staff';
             }
+            $courseGateway = $container->get(CourseGateway::class);
+            $classes= $courseGateway->getCourseClassById($issue['gibbonCourseClassID']);
+            $classrecord = Format::courseClassName($classes['courseNameShort'], $classes['name']);
             $detailsData = [
                 'workrecordID' => $workrecordID,
                 'owner' => Format::nameLinked($owner['gibbonPersonID'], $owner['title'] , $owner['preferredName'] , $owner['surname'] , $ownerRole),
                 'technician' => $hasTechAssigned ? Format::name($technician['title'] , $technician['preferredName'] , $technician['surname'] , 'Student') : __('Submitted'),
                 'date' => Format::date($issue['date']),
+                'classes'=> $classrecord
             ];
 
             $table = DataTable::createDetails('details');
@@ -144,7 +150,8 @@ if (!isModuleAccessible($guid, $connection2)) {
             //        ->format(Format::using('number', ['workrecordID', 0]));
 
             $table->addColumn('owner', __("Teacher's Name"));
-            $table->addColumn($issue['gibbonCourseClassID'],__('Classes'));
+
+            $table->addColumn('classes',__('Classes'));
 
             $table->addColumn('technician', __('Status'));
 

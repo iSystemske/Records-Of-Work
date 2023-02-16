@@ -63,9 +63,13 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/workRecor
             ->placeholder('Week 0')
             ->required()
             ->maxLength(55);
+//add date field
+$row=$form->addRow();
+          $row->addLabel('date', __('Date'));
+          $row->addDate('date')
+              ->required();
     
 //classes
-
 $row = $form->addRow();
 $row->addLabel('gibbonCourseClassID', __('Class'))->description(__('Select class within a course/Subject.'));
 //$row->addYesNoRadio('class')->checked(!empty($selected)? 'Y' : 'N')->required();
@@ -81,7 +85,8 @@ $sql = "SELECT gibbonCourseClass.gibbonCourseClassID as value, CONCAT(gibbonCour
     WHERE gibbonPersonID=:gibbonPersonID AND gibbonSchoolYearID=:gibbonSchoolYearID AND NOT role LIKE '%- Left' ORDER BY gibbonCourseClass.name";
     $row = $form->addRow()->addClass('class bg-blue-100');
         $row->addLabel('gibbonCourseClassID', __('Select Classes'));
-        $row->addCheckbox('gibbonCourseClassID')->fromQuery($pdo, $sql, $data);
+        $row->addCheckbox('gibbonCourseClassID')->fromQuery($pdo, $sql, $data)
+            ->required();
         //->selectMultiple()->setSize(6)->required()->selected($selected);
     
         //$row = $form->addRow();
