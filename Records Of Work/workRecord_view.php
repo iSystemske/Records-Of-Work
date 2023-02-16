@@ -268,6 +268,7 @@ if (!isModuleAccessible($guid, $connection2)) {
 */
     //Subject & Description Column
     $table->addColumn('issueName', __('Week'))
+          ->description(__('issueName'))
           ->format(function ($issue) {
             return Format::bold($issue['issueName']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['description']), 100));
           });
@@ -278,20 +279,24 @@ if (!isModuleAccessible($guid, $connection2)) {
       return Format::bold($issue['contentCovered']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['contentCovered']), 50));
     });
     //add classes
-   $table->addColumn('gibbonCourseClassID', __('Classes'))
+    $courseGateway = $container->get(CourseGateway::class);
+   $table->addColumn('rgibbonCourseClassID', __('Classes'))
          ->format(function($row) use ($courseGateway,$page){
-            //$courseGateway = $container->get(CourseGateway::class);
+            //$courseGateway ->get(CourseGateway::class);
             //$gibbonC=$issue['rgibbonCourseClassID'];
             //$gibbonCourseClassID=$gibbonC['rgibbonCourseClassID'];
-            if(array_key_exists('gibbonCourseClassID',$row)){
-                //$gibbonCourseClassID=$issue['rgibbonCourseClassID'];
-                $gibbonCourseClassID = $courseGateway->getCourseClassByID($row['gibbonCourseClassID']);
-       $class= Format::courseClassName($gibbonCourseClassID['course'], $gibbonCourseClassID['class']);
+            //if(array_key_exists('gibbonCourseClassID',$row)){
+               // $gibbonCourseClassID=$row['rgibbonCourseClassID'];
+                //echo $row['rgibbonCourseClassID'];
+                //$page ->addError(__('No ID'));
+//                $page->addError(__(var_dump($courseGateway->getCourseClassByID($row["rgibbonCourseClassID"]))));
+                $gibbonCourseClassID = $courseGateway->getCourseClassByID($row['rgibbonCourseClassID']);
+                $class= Format::courseClassName($gibbonCourseClassID['courseNameShort'], $gibbonCourseClassID['name']);
                 echo $class;
-            } else {
-                $page ->addError(__('No ID'));
-                echo'no ID';
-            }
+           // } else {
+            //    $page ->addError(__('No ID'));
+             //   echo'no ID';
+            //}
             //lets go
 //            return $gibbonCourseClassID;
 // 
