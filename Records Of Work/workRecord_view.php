@@ -47,9 +47,11 @@ if (!isModuleAccessible($guid, $connection2)) {
     $moduleName = $session->get('module');
 
     $schoolYear = $container->get(SchoolYearGateway::class)->getByID($session->get('gibbonSchoolYearID'), ['firstDay', 'lastDay']);
-    $startDate = isset($_GET['startDate']) ? Format::dateConvert($_GET['startDate']) : ($schoolYear['firstDay'] ?? null);
+    $today = date('Y-m-d');
+    $fiveDaysBack = Format::dateConvert("-7 day", $today);
+    $startDate = isset($_GET['startDate']) ? Format::dateConvert($_GET['startDate']) : ($fiveDaysBack ?? null);
     $endDate = isset($_GET['endDate']) ? Format::dateConvert($_GET['endDate']) : ($schoolYear['lastDay'] ?? null);
-    $startDate = Format::dateConvert("-7 day", $endDate);
+    //$startDate = Format::dateConvert("-7 day", $endDate);
     
     $relation = $_GET['relation'] ?? null;
 

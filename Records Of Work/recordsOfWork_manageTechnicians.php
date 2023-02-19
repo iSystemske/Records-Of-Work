@@ -49,7 +49,7 @@ if (!isActionAccessible($guid, $connection2, '/modules/Records Of Work/recordsOf
     };
 
     $table = DataTable::create('technicians');
-    $table->setTitle('Administrators');
+    $table->setTitle('Technicians');
 
     $table->addHeaderAction('add', __('Add'))
             ->setURL('/modules/' . $session->get('module') . '/recordsOfWork_createTechnician.php')
