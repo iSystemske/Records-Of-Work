@@ -408,6 +408,9 @@ if (!isModuleAccessible($guid, $connection2)) {
                                 ->setIcon('reincarnate');
                     }
                 }
+                $actions->addAction('delete', __('Delete'))
+                ->setURL('/modules/' . $moduleName . '/records_delete.php');
+
             });
 
     echo $table->render($recordOfWork);
