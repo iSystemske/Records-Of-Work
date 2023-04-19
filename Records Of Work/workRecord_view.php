@@ -273,7 +273,7 @@ if (!isModuleAccessible($guid, $connection2)) {
     $table->addColumn('weekNumber', __('Week'))
           ->description(__('weekNumber'))
           ->format(function ($issue) {
-            return Format::bold($issue['weekNumber']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['description']), 100));
+            return Format::bold($issue['weekNumber']) . '<br/>' . Format::small(Format::truncate(strip_tags($issue['contentCovered']), 100));
           });
     
     //add content display column

@@ -17,7 +17,7 @@ class IssueGateway extends QueryableGateway
 
     private static $tableName = 'recordsOfWork';
     private static $primaryKey = 'workrecordID';
-    private static $searchableColumns = ['workrecordID', 'weekNumber', 'contentCovered'];
+    private static $searchableColumns = ['weekNumber', 'contentCovered'];
 
     public function selectActiveIssueByTechnician($qualityassuaranceID) {
         $select = $this
