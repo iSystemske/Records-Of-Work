@@ -31,7 +31,7 @@ if (!isModuleAccessible($guid, $connection2)) {
 
     $schoolYear = $container->get(SchoolYearGateway::class)->getByID($session->get('gibbonSchoolYearID'), ['firstDay', 'lastDay']);
     $today = date('Y-m-d');
-    $fiveDaysBack = Format::dateConvert("-7 day", $today);
+    $fiveDaysBack = date('Y-m-d', strtotime('-7 days', strtotime($today)));
     $startDate = isset($_GET['startDate']) ? Format::dateConvert($_GET['startDate']) : ($fiveDaysBack ?? null);
     $endDate = isset($_GET['endDate']) ? Format::dateConvert($_GET['endDate']) : ($schoolYear['lastDay'] ?? null);
     //$startDate = Format::dateConvert("-7 day", $endDate);
