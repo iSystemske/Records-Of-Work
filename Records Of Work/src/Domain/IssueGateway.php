@@ -41,7 +41,14 @@ class IssueGateway extends QueryableGateway
     }      
     
     public function queryRecords($criteria, $gibbonPersonID = null, $relation = null, $viewRecordsStatus = null, $techDepartments = null) {      
-        $query = $this
+        // Calculate default filter dates (7 days back from today)
+    $today = date('Y-m-d');
+    $fiveDaysBack = date('Y-m-d', strtotime('-7 days', strtotime($today)));
+
+    // Use default filter dates if not provided
+    $startDate = $criteria->hasFilter('startDate') ? $criteria->getFilterValue('startDate') : $fiveDaysBack;
+    $endDate = $criteria->hasFilter('endDate') ? $criteria->getFilterValue('endDate') : ($schoolYear['lastDay']);
+            $query = $this
             ->newQuery()
             ->from('recordsOfWork')
             ->cols(['recordsOfWork.*', 'schoolQA.gibbonPersonID AS techPersonID', 'recordsOfWorkclasses.className', 'recordsOfWorkclasses.gibbonCourseClassID as rgibbonCourseClassID'])
@@ -97,27 +104,6 @@ class IssueGateway extends QueryableGateway
                     ->where('recordsOfWork.category = :category')
                     ->bindValue('category', $createdByID);
             },
-/*
-            'category' => function ($query, $category) {
-                return $query
-                    ->where('recordsOfWork.category = :category')
-                    ->bindValue('category', $category);
-            },
-            'priority' => function ($query, $priority) {
-                return $query
-                    ->where('recordsOfWork.priority = :priority')
-                    ->bindValue('priority', $priority);
-            },
-            'subcategoryID' => function ($query, $subcategoryID) {
-                return $query
-                    ->where('recordsOfWork.subcategoryID = :subcategoryID')
-                    ->bindValue('subcategoryID', $subcategoryID);
-            },
-            'departmentID' => function ($query, $departmentID) {
-                return $query
-                    ->where('recordsOfWorkclasses.gibbonCourseClassID = :departmentID')
-                    ->bindValue('departmentID', $departmentID);
-            },*/
              'startDate' => function ($query, $startDate) {
                 return $query
                     ->where('date >= :startDate')
