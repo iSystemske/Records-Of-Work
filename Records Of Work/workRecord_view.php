@@ -1,21 +1,4 @@
 <?php
-/*
-Gibbon, Flexible & Open School System
-Copyright (C) 2010, Ross Parker
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
 use Gibbon\Domain\DataSet;
 use Gibbon\Forms\DatabaseFormFactory;
 use Gibbon\Forms\Form;
@@ -116,14 +99,6 @@ if (!isModuleAccessible($guid, $connection2)) {
         $row->addTextField('search')
             ->setValue($criteria->getSearchText());
 
- /*   if (count($relations) > 1) {
-        $row = $form->addRow()->addClass('advancedOptions hidden');
-            $row->addLabel('relation', __('Relation'));
-            $row->addHiddenValue('relation')
-                ->fromArray($relations)
-                ->selected($relation);
-    }
-*/
     $row = $form->addRow()->addClass('advancedOptions hidden');
         $row->addLabel('startDate', __('Start Date Filter'));
         $row->addDate('startDate')
@@ -169,25 +144,6 @@ if (!isModuleAccessible($guid, $connection2)) {
         'status:completed'   => __('Status').': '.__('completed')
     ];
 
-    /*
-    Removed for simplicity
-    if ($isTechnician) {
-        switch($techGroupGateway->getPermissionValue($gibbonPersonID, 'viewRecordsStatus')) {
-            case 'UP':
-                unset($statusFilter['status:completed']);
-                break;
-
-            case 'PR':
-                unset($statusFilter['status:Submitted']);
-                break;
-
-            case 'InReview':
-                $statusFilter = [];
-                break;
-        }
-    }
-    */
-
     $table->addMetaData('filterOptions', $statusFilter);
 
     if ($simpleCategories) {
@@ -216,25 +172,6 @@ if (!isModuleAccessible($guid, $connection2)) {
 
             $departments = $departmentPermissionGateway->queryDeptPerms($departmentPermissionCriteria);
         }
-/*
-        $subcategoryGateway = $container->get(SubcategoryGateway::class);
-        foreach ($departments as $department) {
-            $table->addMetaData('filterOptions', [
-                'departmentID:' . $department['departmentID'] => __('Department') . ': ' . $department['schoolYearGroup'],
-            ]);
-
-            $subcategoryCriteria = $subcategoryGateway->newQueryCriteria(true)
-                ->filterBy('departmentID', $department['departmentID'])
-                ->sortBy(['className']);
-
-            $subcategories = $subcategoryGateway->querySubcategories($subcategoryCriteria);
-            foreach ($subcategories as $subcategory) {
-                $table->addMetaData('filterOptions', [
-                    'subcategoryID:' . $subcategory['subcategoryID'] => '&emsp;' . __('Subcategory') . ': ' . $subcategory['schoolYearGroup'] . ' - ' . $subcategory['className'],
-                ]);
-            }
-        }
-        */
     }
 
     $priorityFilters = explodeTrim($settingsGateway->getSettingByScope($moduleName, 'recordsPriority', false));
@@ -264,11 +201,6 @@ if (!isModuleAccessible($guid, $connection2)) {
             ->setURL('/modules/' . $moduleName . '/workRecord_create.php')
             ->displayLabel();
     }
-/*
-    //Record Of Work ID column
-    $table->addColumn('workrecordID', __('Record Of Work ID'))
-            ->format(Format::using('number', ['workrecordID']));
-*/
     //Subject & Description Column
     $table->addColumn('weekNumber', __('Week'))
           ->description(__('weekNumber'))
@@ -285,72 +217,10 @@ if (!isModuleAccessible($guid, $connection2)) {
     $courseGateway = $container->get(CourseGateway::class);
    $table->addColumn('rgibbonCourseClassID', __('Classes'))
          ->format(function($row) use ($courseGateway,$page){
-            //$courseGateway ->get(CourseGateway::class);
-            //$gibbonC=$issue['rgibbonCourseClassID'];
-            //$gibbonCourseClassID=$gibbonC['rgibbonCourseClassID'];
-            //if(array_key_exists('gibbonCourseClassID',$row)){
-               // $gibbonCourseClassID=$row['rgibbonCourseClassID'];
-                //echo $row['rgibbonCourseClassID'];
-                //$page ->addError(__('No ID'));
-//                $page->addError(__(var_dump($courseGateway->getCourseClassByID($row["rgibbonCourseClassID"]))));
                 $gibbonCourseClassID = $courseGateway->getCourseClassByID($row['rgibbonCourseClassID']);
                 $class= Format::courseClassName($gibbonCourseClassID['courseNameShort'], $gibbonCourseClassID['name']);
                 echo $class;
-           // } else {
-            //    $page ->addError(__('No ID'));
-             //   echo'no ID';
-            //}
-            //lets go
-//            return $gibbonCourseClassID;
-// 
         });
-//            {
-  //          }*/
-//           $classes = $issue['rgibbonCourseClassID'],
-//            $out = Format::keyValue($issue, 'rgibbonCourseClassID', function($item){
- //               $output = Format::bold(Format::courseClassName($item['course'], $item['class']));
- //               return $output;            
-  //          })
-   //     );
-            //$classes=$courseClassGateway->selectBy($issue['gibbonCourseClassID']);
-            //}
-            //return $output;
-       // });
-
-    //Owner & QA Column
-/*    $table->addColumn('gibbonPersonID', __('To be checked By'))
-                ->description(__('QA'))
-                ->format(function ($row) use ($userGateway) {
-                    $owner = $userGateway->getByID($row['gibbonPersonID']);
-                    $output = Format::bold(Format::name($owner['title'], $owner['preferredName'], $owner['surname'], 'Staff')) . '<br/>';
-
-                    $tech = $userGateway->getByID($row['techPersonID']);
-                    if (!empty($tech)) {
-                        $output .= Format::small(Format::name($tech['title'], $tech['preferredName'], $tech['surname'], 'Staff'));
-                    }
-
-                    return $output;
-                              });
-*/
-    //Facility & Category Column
-/*    $table->addColumn('facility', __('Facility'))
-        ->description(__('Category'))
-        ->format(function ($row) use ($simpleCategories) {
-            $facility = $row['facility'] ?? 'N/A';
-
-            $category = $row['category'];
-            if (!$simpleCategories && !empty($row['className'])) {
-                $category = $row['schoolYearGroup'] . ' - ' . $row['className'];
-            }
-
-            return  __(Format::bold($facility) . '<br/>'. Format::small($category));
-        });
-
-    //Priority Column
-    if (!empty($priorityFilters)) {
-        $table->addColumn('priority', __($settingsGateway->getSettingByScope($moduleName, 'recordsPriorityName')));
-    }
-*/
     //add teacher
     $table->addColumn('gibbonPersonID', __('Teacher'))
           ->format(function($row) use($userGateway){
