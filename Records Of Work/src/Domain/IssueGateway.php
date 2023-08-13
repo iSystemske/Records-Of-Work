@@ -47,17 +47,14 @@ class IssueGateway extends QueryableGateway
 
     // Use default filter dates if not provided
     $startDate = $criteria->hasFilter('startDate') ? $criteria->getFilterValue('startDate') : $fiveDaysBack;
-    $endDate = $criteria->hasFilter('endDate') ? $criteria->getFilterValue('endDate') : ($schoolYear['lastDay']);
+    $endDate = $criteria->hasFilter('endDate') ? $criteria->getFilterValue('endDate') : $today;
             $query = $this
             ->newQuery()
             ->from('recordsOfWork')
             ->cols(['recordsOfWork.*', 'schoolQA.gibbonPersonID AS techPersonID', 'recordsOfWorkclasses.className', 'recordsOfWorkclasses.gibbonCourseClassID as rgibbonCourseClassID'])
             ->leftJoin('recordsOfWorkclasses', 'recordsOfWork.workrecordID=recordsOfWorkclasses.workrecordID')
             ->leftJoin('schoolQA AS schoolQA', 'recordsOfWork.qualityassuaranceID=schoolQA.qualityassuaranceID');
-            //->leftJoin('qualityAssuaranceDepartments', 'recordsOfWorkclasses.gibbonCourseClassID=qualityAssuaranceDepartments.departmentID')
-            //->leftJoin('gibbonSpace', 'recordsOfWork.gibbonSpaceID=gibbonSpace.gibbonSpaceID')
-//, 'gibbonSpace.name AS facility'
-        
+                    
         if ($relation == 'My Records') {
             $query->where('recordsOfWork.gibbonPersonID = :gibbonPersonID')
                 ->bindValue('gibbonPersonID', $gibbonPersonID);
